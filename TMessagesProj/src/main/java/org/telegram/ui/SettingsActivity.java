@@ -999,6 +999,10 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
                 presentFragment(new AudioRecorderSettingsActivity());
                 break;
             }
+            case 900: {
+                presentFragment(new BulogramSettingsActivity());
+                break;
+            }
             case 27: {
                 presentFragment(new HeaderSettingsActivity());
                 break;
