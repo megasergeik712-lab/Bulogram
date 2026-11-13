@@ -1,0 +1,32 @@
+name: Build Bulogram
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Inject API keys
+        env:
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+        run: |
+          F=$(find . -name BuildVars.java | head -n1)
+          echo "File: $F"
+          sed -i -E "s/(APP_ID = )[0-9]+;/\1${TG_API_ID};/; s/(APP_HASH = \")[0-9a-fA-F]*(\";)/\1${TG_API_HASH}\2/" "$F"
+          grep -q "APP_ID = ${TG_API_ID};" "$F" || { echo "APP_ID not replaced"; exit 1; }
+          grep -q "APP_HASH = \"${TG_API_HASH}\"" "$F" || { echo "APP_HASH not replaced"; exit 1; }
+      - name: Build
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleAfatDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bulogram-apk
+          path: "**/build/outputs/apk/**/*.apk"
