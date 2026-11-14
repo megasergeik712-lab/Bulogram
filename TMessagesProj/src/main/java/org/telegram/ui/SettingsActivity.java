@@ -843,8 +843,8 @@ public class SettingsActivity extends BaseFragment implements NotificationCenter
         items.add(SettingCell.Factory.of(19, IconBackgroundColors.GREEN.top, IconBackgroundColors.GREEN.bottom, R.drawable.settings_policy, getString(R.string.PrivacyPolicy)));
 
         items.add(UItem.asShadow(null));
-        items.add(SettingCell.Factory.of(900, 0xFF3D8BEB, 0xFF2A6FD9, 0, "Bulogram"));
-
+        items.add(SettingCell.Factory.of(900, 0xFF3D8BEB, 0xFF2A6FD9, R.drawable.settings_gift, "Bulogram"));
+        
         if (SharedSettings.experimentalSettingsAllowed.get()) {
             items.add(UItem.asShadow(null));
             items.add(UItem.asHeader(getString(R.string.SettingsExperimental)));
